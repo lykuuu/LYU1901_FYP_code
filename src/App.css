@@ -3,10 +3,30 @@
   text-align: center;
   align-content: center;
   font-family: 'Comfortaa';
+  padding-left: 0;
+  padding-right: 0;
 }
+
+.Header{
+  text-align: center;
+  align-content: center;
+  font-family: 'Comfortaa';
+  min-width: 100vw;
+  padding-top: 2vh;
+  padding-left: 0;
+  padding-right: 0;
+  padding-bottom: 1vh;
+}
+
+.sidebar{
+  background-color: rgb(56, 60, 65);
+  min-width: 100vw;
+}
+
 .id_select{
   display: flex;
   flex-direction: column;
+  padding-top: 10vh;
 }
 
 .Alert{
