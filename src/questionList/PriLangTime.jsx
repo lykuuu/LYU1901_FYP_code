@@ -12,11 +12,11 @@ class PriLangTime extends React.Component {
                 </Form.Group>
                 <Form.Group as={Col} md={6}>
                     <div className="mb-3">
-                        <Form.Check inline label="51-60%" type={'radio'} name="priLangTime" value={"1"} onChange={this.props.handleChange} />
-                        <Form.Check inline label="61-70%" type={'radio'} name="priLangTime" value={"2"} onChange={this.props.handleChange} />
-                        <Form.Check inline label="71-80%" type={'radio'} name="priLangTime" value={"3"} onChange={this.props.handleChange} />
-                        <Form.Check inline label="81-90%" type={'radio'} name="priLangTime" value={"4"} onChange={this.props.handleChange} />
-                        <Form.Check inline label="91-100%" type={'radio'} name="priLangTime" value={"5"} onChange={this.props.handleChange} />
+                        <Form.Check inline label="51-60%" type={'radio'} name="priLangTime" value={"51-60%"} onChange={this.props.handleChange} />
+                        <Form.Check inline label="61-70%" type={'radio'} name="priLangTime" value={"61-70%"} onChange={this.props.handleChange} />
+                        <Form.Check inline label="71-80%" type={'radio'} name="priLangTime" value={"71-80%"} onChange={this.props.handleChange} />
+                        <Form.Check inline label="81-90%" type={'radio'} name="priLangTime" value={"81-90%"} onChange={this.props.handleChange} />
+                        <Form.Check inline label="91-100%" type={'radio'} name="priLangTime" value={"91-100%"} onChange={this.props.handleChange} />
                     </div>
                 </Form.Group>
             </Form.Row>
