@@ -2,6 +2,7 @@ import React from 'react';
 import Col from '../node_modules/react-bootstrap/Col'
 import Button from '../node_modules/react-bootstrap/Button'
 import Form from '../node_modules/react-bootstrap/Form'
+import { bigP_generation, g_generation, privateKey_gen, publicKey_gen, encrypt, decrypt, add_encrypted } from './function/Elgamal.js'
 import { Faculty, Level, StudyYear, CourseProperty, Sex, PriLang, PriLangTime, SuppLang, Hours, ExpGrade } from '../src/questionList/questionList'
 
 import './App.css';
@@ -156,8 +157,34 @@ class Evaluation extends React.Component {
     });
   }
   handleSubmit = (e) => {
+    //testing code, please delete after testing
     const show = JSON.stringify(this.state);
-    alert(show);
+    var p = bigP_generation();
+    var g = g_generation(p);
+    var priK = privateKey_gen(p, g);
+    var pubK = publicKey_gen(p, g, priK);
+    var message1 = 4;
+    var message2 = 5;
+    var message3 = 100;
+    var message = message1 + message2 + message3;
+    var encrypted1 = encrypt(message1, p, g, pubK);
+    var encrypted2 = encrypt(message2, p, g, pubK);
+    var encrypted3 = encrypt(message3, p, g, pubK);
+    var encrypted4 = add_encrypted(encrypted1, encrypted2);
+    var encrypted = add_encrypted(encrypted3, encrypted4);
+    var decrypted = decrypt(encrypted, p, g, priK);
+    alert("p = " + p + "\n" +
+      "g = " + g + "\n" +
+      "priK = " + priK + "\n" +
+      "pubK = " + pubK + "\n" +
+      "message = " + message + "\n");
+
+
+    alert("encrypted = " + encrypted + "\n");
+
+    alert("decrypted = " + decrypted + "\n");
+    //testing code end
+    e.preventDefault();
   }
 
 
@@ -467,6 +494,8 @@ class Evaluation extends React.Component {
             </Col>
           </Form.Row>
         </Form>
+        <div id="testing">
+        </div>
       </div>
     );
   }
