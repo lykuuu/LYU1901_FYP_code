@@ -7,8 +7,6 @@ import { Faculty, Level, StudyYear, CourseProperty, Sex, PriLang, PriLangTime, S
 
 import './App.css';
 
-//<Question option="1" name={"q1"} handleChange={this.handleChange} question="1. The teacher presented in a clear manner." />
-
 class Question extends React.Component {
   render() {
     return (
@@ -62,13 +60,12 @@ class Options3 extends React.Component {
 }
 
 class Evaluation extends React.Component {
-
+  //please put new states at the end of states list, the order of states will affect some functions
   constructor(prop) {
     super(prop)
     this.state = {
       q12s_switch: false,
       q14s_switch: false,
-      token: 0,
       faculty: -1,
       level: -1,
       studyYear: -1,
@@ -127,6 +124,9 @@ class Evaluation extends React.Component {
         this.setState({
           q12s_switch: true
         });
+        this.setState({
+          q12s: -1
+        });
       }
     }
     if (name === "q14") {
@@ -140,6 +140,9 @@ class Evaluation extends React.Component {
       } else {
         this.setState({
           q14s_switch: true
+        });
+        this.setState({
+          q14s: -1
         });
       }
     }
@@ -173,34 +176,66 @@ class Evaluation extends React.Component {
     });
   }
   handleSubmit = (e) => {
-    //testing code, please delete after testing
-    const show = JSON.stringify(this.state);
-    var p = bigP_generation();
-    var g = g_generation(p);
-    var priK = privateKey_gen(p, g);
-    var pubK = publicKey_gen(p, g, priK);
-    var message1 = 4;
-    var message2 = 5;
-    var message3 = 100;
-    var message = message1 + message2 + message3;
-    var encrypted1 = encrypt(message1, p, g, pubK);
-    var encrypted2 = encrypt(message2, p, g, pubK);
-    var encrypted3 = encrypt(message3, p, g, pubK);
-    var encrypted4 = add_encrypted(encrypted1, encrypted2);
-    var encrypted = add_encrypted(encrypted3, encrypted4);
-    var decrypted = decrypt(encrypted, p, g, priK);
-    alert("p = " + p + "\n" +
-      "g = " + g + "\n" +
-      "priK = " + priK + "\n" +
-      "pubK = " + pubK + "\n" +
-      "message = " + message + "\n");
+    //first check the form answers
+    var counter = 0;
+    var missing = 0;
+    for (var i in this.state) {
+      counter += 1;
+      if (counter === 33) {
+        missing = 0;
+        break;
+      }
+      if (counter >= 3) {
+        if (counter !== 10) {
+          var name = i;
+          if (this.state[name] === -1) {
+            alert("Please finish the form.");
+            missing = 1;
+            break;
+          }
+        } else {
+          var true1 = this.state.suppLang.English;
+          var true2 = this.state.suppLang.Cantonese;
+          var true3 = this.state.suppLang.Putonghua;
+          var true4 = this.state.suppLang.Others;
+          if (this.state.suppLang.NA) {
+            if (true1 || true2 || true3 || true4) {
+              alert("Please check the answer of supplementary languages part.");
+              missing = 1;
+              break;
+            }
+          } else {
+            if (!(true1 || true2 || true3 || true4)) {
+              alert("Please check the answer of supplementary languages part.");
+              missing = 1;
+              break;
+            }
+          }
+        }
+      }
+    }
+    if (missing === 0) {
+      //testing code, please replace it with code for receiving p, g, public key
+      alert("start encrypting");
+      var p = bigP_generation();
+      var g = g_generation(p);
+      var priK = privateKey_gen(p, g);
+      var pubK = publicKey_gen(p, g, priK);
+      //testing code end
+      //only encrypt q1-q18 by elgamal
+      var counter2 = 0;
+      for (var x in this.state) {
+        var dataName = x;
+        if (counter2 > 11 && counter2 < 32) {
+          var encrypted = encrypt(this.state[dataName], p, g, pubK);
+          this.state[dataName] = encrypted;
+        }
+        counter2 += 1;
+      }
+      //Here is the data will be sent
+      var DataToBeSent = JSON.stringify(this.state);
+    }
 
-
-    alert("encrypted = " + encrypted + "\n");
-
-    alert("decrypted = " + decrypted + "\n");
-    alert(show);
-    //testing code end
     e.preventDefault();
   }
 
@@ -297,6 +332,7 @@ class Evaluation extends React.Component {
             </Form.Group>
           </Form.Row>
 
+          {/* Token and key parts have no function and no state*/}
           <Form.Row>
             <Form.Group as={Col} md={1}>
               <Form.Label>token:</Form.Label>
@@ -314,6 +350,7 @@ class Evaluation extends React.Component {
               <Form.Control as="input" />
             </Form.Group>
           </Form.Row>
+          {/****************************************************/}
 
           <Form.Row>
             <Col>
@@ -324,8 +361,8 @@ class Evaluation extends React.Component {
             </Col>
           </Form.Row>
         </Form>
-        <div id="testing">
-        </div>
+
+
       </div>
     );
   }
