@@ -12,10 +12,10 @@ class PriLang extends React.Component {
                 </Form.Group>
                 <Form.Group as={Col} md={6}>
                     <div className="mb-3">
-                        <Form.Check inline label="English" type={'radio'} name="priLang" value={"1"} onChange={this.props.handleChange} />
-                        <Form.Check inline label="Cantonese" type={'radio'} name="priLang" value={"2"} onChange={this.props.handleChange} />
-                        <Form.Check inline label="Putonghua" type={'radio'} name="priLang" value={"3"} onChange={this.props.handleChange} />
-                        <Form.Check inline label="Others" type={'radio'} name="priLang" value={"4"} onChange={this.props.handleChange} />
+                        <Form.Check inline label="English" type={'radio'} name="priLang" value={"English"} onChange={this.props.handleChange} />
+                        <Form.Check inline label="Cantonese" type={'radio'} name="priLang" value={"Cantonese"} onChange={this.props.handleChange} />
+                        <Form.Check inline label="Putonghua" type={'radio'} name="priLang" value={"Putonghua"} onChange={this.props.handleChange} />
+                        <Form.Check inline label="Others" type={'radio'} name="priLang" value={"Others"} onChange={this.props.handleChange} />
                     </div>
                 </Form.Group>
             </Form.Row>
