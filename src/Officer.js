@@ -1,51 +1,35 @@
 import React from 'react';
 import Button from '../node_modules/react-bootstrap/Button'
 import Form from '../node_modules/react-bootstrap/Form'
+import Alert from "react-bootstrap/Alert"
+import { ExcelRenderer } from 'react-excel-renderer';
 import './App.css';
 
-function buildFileSelector() {
-    const fileSelector = document.createElement('input');
-    fileSelector.setAttribute('type', 'file');
-    fileSelector.setAttribute('multiple', 'multiple');
-    return fileSelector;
-}
 
-class FileDialogue extends React.Component {
-    componentDidMount() {
-        this.fileSelector = buildFileSelector();
-    }
-
-    handleFileSelect = (e) => {
-        e.preventDefault();
-        this.fileSelector.click();
-    }
-
-    render() {
-        return <a className="fileButton" href="" onClick={this.handleFileSelect}>Select files</a>
-    }
-}
-
-class PopUpO extends React.Component {
+class PopUp extends React.Component {
     render() {
         return (
             <div className="Alert">
                 <Form className="TokenAlert">
                     <Form.Group controlId="CourseID">
                         <Form.Label>CourseID</Form.Label>
-                        <Form.Control type="courseID" placeholder="CourseID" />
+                        <Form.Control type="courseID" ref={this.props.courseID} />
                     </Form.Group>
 
-                    <Form.Group controlId="Expire Date">
+                    <Form.Group controlId="ExpireDate">
                         <Form.Label>Expire Date</Form.Label>
-                        <Form.Control type="expireDate" placeholder="Date" />
+                        <Form.Control type="expireDate" ref={this.props.Edate} />
                     </Form.Group>
-                    <FileDialogue />
+                    <Form.Group controlId="FileInput">
+                        <Form.Label>Select an excel file</Form.Label>
+                        <Form.Control type="file" ref={this.props.fileInput} />
+                    </Form.Group>
                     <br></br>
-                    <Button variant="primary" type="submit">
+                    <Button variant="primary" onClick={this.props.alert}>
                         Start Evaluation
                     </Button>
                     <br></br>
-                    <Button variant="danger" type="submit">
+                    <Button variant="danger" onClick={this.props.closePopup}>
                         Close
                     </Button>
 
@@ -62,27 +46,62 @@ class Officer extends React.Component {
     constructor() {
         super();
         this.state = {
-            showOfficer: false
+            showGenerator: false,
+            showAlert: false,
+            generating: false,
         };
+        this.courseID = React.createRef();
+        this.Edate = React.createRef();
+        this.fileInput = React.createRef();
     }
-    OfficerPopup() {
+    Popup() {
         this.setState({
-            showOfficer: !this.state.showOfficer
+            showGenerator: !this.state.showGenerator
         });
     }
-
+    AlertOrPass() {
+        if (this.courseID.current.value === "" || this.Edate.current.value === "" || !this.fileInput.current.files[0])
+            this.setState({
+                showAlert: true
+            });
+        setTimeout(() => {
+            this.setState({
+                showAlert: false
+            });
+        }, 1200);
+        if (this.fileInput.current.files[0] && this.courseID.current.value !== "" && this.Edate.current.value !== "") {
+            ExcelRenderer(this.fileInput.current.files[0], (err, resp) => {
+                if (err) {
+                    console.log(err);
+                }
+                else {
+                    //data for generate evaluation and tokens
+                    var data = {
+                        courseID: this.courseID.current.value,
+                        expireDate: this.Edate.current.value,
+                        studentID: resp.rows
+                    }
+                    console.log(data);
+                }
+            });
+        }
+    }
     render() {
         return (
             <div className="id_select">
                 <h2 className="text-secondary">Instruction</h2>
                 <br></br>
-                <Button variant="info" onClick={this.OfficerPopup.bind(this)}>Start New Evaluation</Button>
+                <Button variant="info" onClick={this.Popup.bind(this)}>Start New Evaluation</Button>
                 <br></br>
                 <Button variant="info" href="/Result">View Results</Button>
                 <br></br>
-                <Button variant="info" href="/">Logout</Button>
+                <Button variant="info" href="/SignIn">Logout</Button>
 
-                {this.state.showOfficer ? <PopUpO closePopup={this.OfficerPopup.bind(this)} /> : null}
+                {this.state.showGenerator ? <PopUp fileInput={this.fileInput} courseID={this.courseID} Edate={this.Edate} alert={this.AlertOrPass.bind(this)} closePopup={this.Popup.bind(this)} /> : null}
+                {this.state.showAlert ?
+                    <Alert className="w-50 mx-auto mt-1 fixed-top" variant="danger">
+                        Invalid courseID / expire date or file!
+                    </Alert> : null}
             </div>
         );
     }

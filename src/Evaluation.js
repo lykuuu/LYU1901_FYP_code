@@ -149,23 +149,20 @@ class Evaluation extends React.Component {
   }
   handleMChange = (e) => {
     const target = e.target;
-    const English = this.state.suppLang.English;
-    const Cantonese = this.state.suppLang.Cantonese;
-    const Putonghua = this.state.suppLang.Putonghua;
-    const Others = this.state.suppLang.Others;
-    const NA = this.state.suppLang.NA;
+    const suppLang = { ...this.state.suppLang };
     const id = target.id;
 
     if (id === "English")
-      this.state.suppLang.English = !English;
+      suppLang.English = !suppLang.English;
     if (id === "Cantonese")
-      this.state.suppLang.Cantonese = !Cantonese;
+      suppLang.Cantonese = !suppLang.Cantonese;
     if (id === "Putonghua")
-      this.state.suppLang.Putonghua = !Putonghua;
+      suppLang.Putonghua = !suppLang.Putonghua;
     if (id === "Others")
-      this.state.suppLang.Others = !Others;
+      suppLang.Others = !suppLang.Others;
     if (id === "N/A")
-      this.state.suppLang.NA = !NA;
+      suppLang.NA = !suppLang.NA;
+    this.setState({ suppLang });
 
   }
   handleTextChange = (e) => {
@@ -223,17 +220,29 @@ class Evaluation extends React.Component {
       var pubK = publicKey_gen(p, g, priK);
       //testing code end
       //only encrypt q1-q18 by elgamal
+      var finished = [];
       var counter2 = 0;
       for (var x in this.state) {
         var dataName = x;
         if (counter2 > 11 && counter2 < 32) {
           var encrypted = encrypt(this.state[dataName], p, g, pubK);
-          this.state[dataName] = encrypted;
+          finished.push(encrypted);
         }
         counter2 += 1;
       }
-      //Here is the data will be sent
-      var DataToBeSent = JSON.stringify(this.state);
+      //generating the data to be sent
+      var Data = JSON.parse(JSON.stringify(this.state));
+      var counter3 = 0;
+      for (var y in Data) {
+        if (counter3 > 11 && counter3 < 32) {
+          Data[y] = finished[counter3 - 12];
+        }
+        counter3 += 1;
+      }
+      delete Data.q12s_switch;
+      delete Data.q14s_switch;
+      //data to be sent
+      console.log(Data);
     }
 
     e.preventDefault();

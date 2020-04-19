@@ -1,44 +1,13 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { Route, BrowserRouter as Router } from 'react-router-dom'
 import './index.css';
-import Header from './Header'
-import Home from './Home';
-import Evaluation from './Evaluation';
-import Officer from './Officer';
-import Result from './Result';
-import Sidebar from './Sidebar'
+import App from './App.js'
 import * as serviceWorker from './serviceWorker';
-import Container from 'react-bootstrap/Container';
-import Row from 'react-bootstrap/Row';
-import Col from 'react-bootstrap/Col';
 
-const routing = (
-    <Container fluid className="background">
-        <Row className="mr-0 ml-0">
-            <Header />
-        </Row>
 
-        <Sidebar />
+ReactDOM.render(<App />, document.getElementById('root'));
 
-        <Row className="vh-100">
-
-            <Col/>
-            <Col xs={10} sm={9} md={8} lg={7}>
-                <Router>
-                    <div>
-                        <Route exact path="/" component={Home} />
-                        <Route path="/Officer" component={Officer} />
-                        <Route path="/Result" component={Result} />
-                        <Route path="/Evaluation" component={Evaluation} />
-                    </div>
-                </Router>
-            </Col>
-            <Col/>
-        </Row>
-    </Container>
-)
-
-ReactDOM.render(routing, document.getElementById('root'));
-
+// If you want your app to work offline and load faster, you can change
+// unregister() to register() below. Note this comes with some pitfalls.
+// Learn more about service workers: https://bit.ly/CRA-PWA
 serviceWorker.unregister();

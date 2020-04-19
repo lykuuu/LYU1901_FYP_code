@@ -26,7 +26,7 @@ class Sidebar extends React.Component {
                     </Nav>
                     <Nav className="mr-3">
                         <Nav.Item>
-                            <Nav.Link eventKey="3" href="/">
+                            <Nav.Link eventKey="3" href="/SignIn">
                                 Sign In
                             </Nav.Link>
                         </Nav.Item>
