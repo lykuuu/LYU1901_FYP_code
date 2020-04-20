@@ -62,16 +62,21 @@ class Result extends React.Component {
         var searchID = this.courseId_input.current.value;
         var found = true;
 
-        this.setState({
-            courseTitle: searchID
-        });
-        //leave for search code
+        //replace with real search code
+        if (searchID !== "") {
+            this.setState({
+                courseTitle: searchID
+            });
 
-        //end of search code
 
-        this.setState({
-            searchSuccess: found
-        });
+            this.setState({
+                searchSuccess: found
+            });
+        }else{
+            this.setState({
+                searchSuccess: false
+            }); 
+        }
         this.setState({
             neverSearch: false
         });

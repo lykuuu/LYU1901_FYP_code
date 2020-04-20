@@ -76,15 +76,19 @@ class SignIn extends React.Component {
     });
   }
   AlertOrPass() {
-    if (this.user.current.value === "" || this.password.current.value === "")
+    if (this.user.current.value === "" || this.password.current.value === "") {
       this.setState({
         showAlert: true
       });
-    setTimeout(() => {
-      this.setState({
-        showAlert: false
-      });
-    }, 1200);
+      setTimeout(() => {
+        this.setState({
+          showAlert: false
+        });
+      }, 1200);
+    } else {
+      //this part should be replaced with user validation
+      window.location = '/Officer';
+    }
   }
   render() {
     return (
