@@ -2,7 +2,6 @@ import React from 'react';
 import Col from '../node_modules/react-bootstrap/Col'
 import Button from '../node_modules/react-bootstrap/Button'
 import Form from '../node_modules/react-bootstrap/Form'
-import SubmitSuccess from './submitSuccess.js';
 import { generateKey, generateIV, AESDecrypt, AESEncrypt } from './function/AES.js'
 import { bigP_generation, g_generation, privateKey_gen, publicKey_gen, encrypt, decrypt, add_encrypted } from './function/Elgamal.js'
 import { Faculty, Level, StudyYear, CourseProperty, Sex, PriLang, PriLangTime, SuppLang, Hours, ExpGrade } from '../src/questionList/questionList'
@@ -98,10 +97,7 @@ class Evaluation extends React.Component {
       q16: -1,
       q17: -1,
       q18: -1,
-      a: "",
-      b: "",
-      token: "",
-      submitted: false
+      a: ""
     }
     this.handleChange = this.handleChange.bind(this);
     this.handleMChange = this.handleMChange.bind(this);
@@ -182,10 +178,10 @@ class Evaluation extends React.Component {
     var missing = 0;
     for (var i in this.state) {
       counter += 1;
-      if (counter === 35) {
+      if (counter === 33) {
         //check token
         if (this.state[i] === "") {
-          alert("Please enter the token!");
+          alert("Please enter the information!");
           missing = 1;
         }
         break;
@@ -265,9 +261,6 @@ class Evaluation extends React.Component {
       //send the ciphertext
 
       //if submit successfully, re-render.
-      this.setState({
-        submitted: true
-      });
     }
 
     e.preventDefault();
@@ -276,8 +269,7 @@ class Evaluation extends React.Component {
 
   render() {
     return (
-      <div>
-        {this.state.submitted ? <SubmitSuccess /> :
+
           <div>
             <h2 className="text-secondary pt-5">Evaluation Form</h2>
             <br></br>
@@ -356,28 +348,10 @@ class Evaluation extends React.Component {
               </div>
               <Form.Row>
                 <Form.Group as={Col}>
-                  <Form.Label>a. Comments for the teacher:</Form.Label>
+                  <Form.Label>a. Encryption information:</Form.Label>
                   <Form.Control as="textarea" rows="3" name={"a"} value={this.state.a} onChange={this.handleTextChange} />
                 </Form.Group>
               </Form.Row>
-
-              <Form.Row>
-                <Form.Group as={Col}>
-                  <Form.Label>b. Comment for the course:</Form.Label>
-                  <Form.Control as="textarea" rows="3" name={"b"} value={this.state.b} onChange={this.handleTextChange} />
-                </Form.Group>
-              </Form.Row>
-
-              {/* Token and key parts have no function and no state*/}
-              <Form.Row>
-                <Form.Group as={Col} md={1}>
-                  <Form.Label>token:</Form.Label>
-                </Form.Group>
-                <Form.Group as={Col} md={3}>
-                  <Form.Control as="input" name={"token"} value={this.state.token} onChange={this.handleTextChange} />
-                </Form.Group>
-              </Form.Row>
-              {/****************************************************/}
 
               <Form.Row>
                 <Col>
@@ -389,9 +363,6 @@ class Evaluation extends React.Component {
               </Form.Row>
             </Form>
           </div>
-        }
-      </div>
-
     );
   }
 }
