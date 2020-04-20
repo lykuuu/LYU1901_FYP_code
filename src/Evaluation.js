@@ -2,6 +2,7 @@ import React from 'react';
 import Col from '../node_modules/react-bootstrap/Col'
 import Button from '../node_modules/react-bootstrap/Button'
 import Form from '../node_modules/react-bootstrap/Form'
+import { generateKey, generateIV, AESDecrypt, AESEncrypt } from './function/AES.js'
 import { bigP_generation, g_generation, privateKey_gen, publicKey_gen, encrypt, decrypt, add_encrypted } from './function/Elgamal.js'
 import { Faculty, Level, StudyYear, CourseProperty, Sex, PriLang, PriLangTime, SuppLang, Hours, ExpGrade } from '../src/questionList/questionList'
 
@@ -97,7 +98,8 @@ class Evaluation extends React.Component {
       q17: -1,
       q18: -1,
       a: "",
-      b: ""
+      b: "",
+      token: ""
     }
     this.handleChange = this.handleChange.bind(this);
     this.handleMChange = this.handleMChange.bind(this);
@@ -178,8 +180,12 @@ class Evaluation extends React.Component {
     var missing = 0;
     for (var i in this.state) {
       counter += 1;
-      if (counter === 33) {
-        missing = 0;
+      if (counter === 35) {
+        //check token
+        if (this.state[i] === ""){
+          alert("Please enter the token!");
+          missing = 1;
+        }
         break;
       }
       if (counter >= 3) {
@@ -218,7 +224,7 @@ class Evaluation extends React.Component {
       var g = g_generation(p);
       var priK = privateKey_gen(p, g);
       var pubK = publicKey_gen(p, g, priK);
-      //testing code end
+      //////////////////////////////////////testing code end
       //only encrypt q1-q18 by elgamal
       var finished = [];
       var counter2 = 0;
@@ -241,8 +247,20 @@ class Evaluation extends React.Component {
       }
       delete Data.q12s_switch;
       delete Data.q14s_switch;
+      Data = JSON.stringify(Data);
       //data to be sent
-      console.log(Data);
+      //Encrypt data with AES
+      ////////////////////////////////////////////////////
+      var key = generateKey();                          //should be done in server
+      var IV = generateIV();                            //
+      ////////////////////////////////////////////////////
+      var ciphertext = AESEncrypt(Data,key,IV);         //use the key and IV from the server to encrypt data
+      ////////////////////////////////////////////////////
+      console.log(ciphertext);                          //just for debugging
+      var originaltext = AESDecrypt(ciphertext,key,IV); //
+      console.log(originaltext);                        //
+      ////////////////////////////////////////////////////
+      //send the ciphertext
     }
 
     e.preventDefault();
@@ -347,16 +365,7 @@ class Evaluation extends React.Component {
               <Form.Label>token:</Form.Label>
             </Form.Group>
             <Form.Group as={Col} md={3}>
-              <Form.Control as="input" />
-            </Form.Group>
-          </Form.Row>
-
-          <Form.Row>
-            <Form.Group as={Col} md={1}>
-              <Form.Label>key:</Form.Label>
-            </Form.Group>
-            <Form.Group as={Col} md={3}>
-              <Form.Control as="input" />
+              <Form.Control as="input" name={"token"} value={this.state.token} onChange={this.handleTextChange}/>
             </Form.Group>
           </Form.Row>
           {/****************************************************/}
