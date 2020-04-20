@@ -2,6 +2,7 @@ import React from 'react';
 import Col from '../node_modules/react-bootstrap/Col'
 import Button from '../node_modules/react-bootstrap/Button'
 import Form from '../node_modules/react-bootstrap/Form'
+import SubmitSuccess from './submitSuccess.js';
 import { generateKey, generateIV, AESDecrypt, AESEncrypt } from './function/AES.js'
 import { bigP_generation, g_generation, privateKey_gen, publicKey_gen, encrypt, decrypt, add_encrypted } from './function/Elgamal.js'
 import { Faculty, Level, StudyYear, CourseProperty, Sex, PriLang, PriLangTime, SuppLang, Hours, ExpGrade } from '../src/questionList/questionList'
@@ -99,7 +100,8 @@ class Evaluation extends React.Component {
       q18: -1,
       a: "",
       b: "",
-      token: ""
+      token: "",
+      submitted: false
     }
     this.handleChange = this.handleChange.bind(this);
     this.handleMChange = this.handleMChange.bind(this);
@@ -182,7 +184,7 @@ class Evaluation extends React.Component {
       counter += 1;
       if (counter === 35) {
         //check token
-        if (this.state[i] === ""){
+        if (this.state[i] === "") {
           alert("Please enter the token!");
           missing = 1;
         }
@@ -254,13 +256,18 @@ class Evaluation extends React.Component {
       var key = generateKey();                          //should be done in server
       var IV = generateIV();                            //
       ////////////////////////////////////////////////////
-      var ciphertext = AESEncrypt(Data,key,IV);         //use the key and IV from the server to encrypt data
+      var ciphertext = AESEncrypt(Data, key, IV);         //use the key and IV from the server to encrypt data
       ////////////////////////////////////////////////////
       console.log(ciphertext);                          //just for debugging
-      var originaltext = AESDecrypt(ciphertext,key,IV); //
+      var originaltext = AESDecrypt(ciphertext, key, IV); //
       console.log(originaltext);                        //
       ////////////////////////////////////////////////////
       //send the ciphertext
+
+      //if submit successfully, re-render.
+      this.setState({
+        submitted: true
+      });
     }
 
     e.preventDefault();
@@ -270,118 +277,121 @@ class Evaluation extends React.Component {
   render() {
     return (
       <div>
-        <h2 className="text-secondary pt-5">Evaluation Form</h2>
-        <br></br>
-        <Form onSubmit={this.handleSubmit} noValidate className="Form pt-2">
-          <div className="Row1">
-            <h3>Basic Information</h3>
-            <Faculty handleChange={this.handleChange} />
-            <Level handleChange={this.handleChange} />
-            <StudyYear handleChange={this.handleChange} />
-            <CourseProperty handleChange={this.handleChange} />
-            <Sex handleChange={this.handleChange} />
-            <PriLang handleChange={this.handleChange} />
-            <PriLangTime handleChange={this.handleChange} />
-            <SuppLang handleMChange={this.handleMChange} />
-            <Hours handleChange={this.handleChange} />
-            <ExpGrade handleChange={this.handleChange} />
-          </div>
-
-          <h3>Clarity of Explanation</h3>
-          <Question option="1" name={"q1"} handleChange={this.handleChange} question="1. The teacher presented in a clear manner." />
-          <Question option="1" name={"q2"} handleChange={this.handleChange} question="2. The teacher used relevant examples to assist my learning." />
-          <div className="Row1">
-            <h3>Enthusiasm and Communication</h3>
-            <Question option="1" name={"q3"} handleChange={this.handleChange} question="3. The teacher was enthusiastic about teaching." />
-            <Question option="1" name={"q4"} handleChange={this.handleChange} question="4. The teacher encouraged active participation in class." />
-            <Question option="1" name={"q5"} handleChange={this.handleChange} question="5. There was effective communication between teacher and students." />
-          </div>
-          <h3>Motivation</h3>
-          <Question option="1" name={"q6"} handleChange={this.handleChange} question="6. The course was interesting." />
-          <Question option="1" name={"q7"} handleChange={this.handleChange} question="7. The course was stimulating." />
-          <Question option="1" name={"q8"} handleChange={this.handleChange} question="8. The course enhanced my knowledge in this subject." />
-          <div className="Row1">
-            <h3>Learning Outcomes and Organisation</h3>
-            <Question option="1" name={"q9"} handleChange={this.handleChange} question="9. The course was well-organised." />
-            <Question option="1" name={"q10"} handleChange={this.handleChange} question="10. Learning outcomes of the course were clear." />
-          </div>
-          <h3>Assessment</h3>
-          <Question option="1" name={"q11"} handleChange={this.handleChange} question="11. Assessment methods were appropriate." />
-          <Question option="1" name={"q12"} handleChange={this.handleChange} question="12. The amount of workload required was appropriate." />
-
-          <Form.Label>If your answer is Strongly Disargee, Disargee or Slightly Disagree to Q12:</Form.Label>
-
-          <Form.Row>
-            <Form.Group as={Col} md={6}>
-              <Form.Label>I found the amount of work required for assessment:</Form.Label>
-            </Form.Group>
-            <Form.Group as={Col} md={6}>
-              <Options2 name={"q12s"} handleChange={this.handleChange} state={this.state} />
-            </Form.Group>
-          </Form.Row>
-          <div className="Row1">
-            <h3>Course Difficulty</h3>
-            <Question option="1" name={"q13"} handleChange={this.handleChange} question="13. Recommended readings were useful." />
-            <Question option="1" name={"q14"} handleChange={this.handleChange} question="14. Course content was of appropriate difficulty." />
-
-            <Form.Label>If your answer is Strongly Disargee, Disargee or Slightly Disagree to Q14:</Form.Label>
-
-            <Form.Row>
-              <Form.Group as={Col} md={3}>
-                <Form.Label>I found the course content:</Form.Label>
-              </Form.Group>
-              <Form.Group as={Col} md={9}>
-                <Options3 name={"q14s"} handleChange={this.handleChange} state={this.state} />
-              </Form.Group>
-            </Form.Row>
-          </div>
-
-          <h3>Learning Support</h3>
-          <Question option="1" name={"q15"} handleChange={this.handleChange} question="15. The course was well supported by library resources." />
-          <Question option="1" name={"q16"} handleChange={this.handleChange} question="16. The course was well supported by IT resources." />
-
-          <div className="Row1">
-            <h3>Overall Opinion</h3>
-            <Question option="1" name={"q17"} handleChange={this.handleChange} question="17. Overall, I am satisfied with the course." />
-            <Question option="1" name={"q18"} handleChange={this.handleChange} question="18. Overall, I am satisfied with the teacher's performance." />
-          </div>
-          <Form.Row>
-            <Form.Group as={Col}>
-              <Form.Label>a. Comments for the teacher:</Form.Label>
-              <Form.Control as="textarea" rows="3" name={"a"} value={this.state.a} onChange={this.handleTextChange} />
-            </Form.Group>
-          </Form.Row>
-
-          <Form.Row>
-            <Form.Group as={Col}>
-              <Form.Label>b. Comment for the course:</Form.Label>
-              <Form.Control as="textarea" rows="3" name={"b"} value={this.state.b} onChange={this.handleTextChange} />
-            </Form.Group>
-          </Form.Row>
-
-          {/* Token and key parts have no function and no state*/}
-          <Form.Row>
-            <Form.Group as={Col} md={1}>
-              <Form.Label>token:</Form.Label>
-            </Form.Group>
-            <Form.Group as={Col} md={3}>
-              <Form.Control as="input" name={"token"} value={this.state.token} onChange={this.handleTextChange}/>
-            </Form.Group>
-          </Form.Row>
-          {/****************************************************/}
-
-          <Form.Row>
-            <Col>
-              <div className="text-center">
-                <Button type="submit" onSubmit={this.handleSubmit}>Submit</Button>
+        {this.state.submitted ? <SubmitSuccess /> :
+          <div>
+            <h2 className="text-secondary pt-5">Evaluation Form</h2>
+            <br></br>
+            <Form onSubmit={this.handleSubmit} noValidate className="Form pt-2">
+              <div className="Row1">
+                <h3>Basic Information</h3>
+                <Faculty handleChange={this.handleChange} />
+                <Level handleChange={this.handleChange} />
+                <StudyYear handleChange={this.handleChange} />
+                <CourseProperty handleChange={this.handleChange} />
+                <Sex handleChange={this.handleChange} />
+                <PriLang handleChange={this.handleChange} />
+                <PriLangTime handleChange={this.handleChange} />
+                <SuppLang handleMChange={this.handleMChange} />
+                <Hours handleChange={this.handleChange} />
+                <ExpGrade handleChange={this.handleChange} />
               </div>
-              <br></br>
-            </Col>
-          </Form.Row>
-        </Form>
 
+              <h3>Clarity of Explanation</h3>
+              <Question option="1" name={"q1"} handleChange={this.handleChange} question="1. The teacher presented in a clear manner." />
+              <Question option="1" name={"q2"} handleChange={this.handleChange} question="2. The teacher used relevant examples to assist my learning." />
+              <div className="Row1">
+                <h3>Enthusiasm and Communication</h3>
+                <Question option="1" name={"q3"} handleChange={this.handleChange} question="3. The teacher was enthusiastic about teaching." />
+                <Question option="1" name={"q4"} handleChange={this.handleChange} question="4. The teacher encouraged active participation in class." />
+                <Question option="1" name={"q5"} handleChange={this.handleChange} question="5. There was effective communication between teacher and students." />
+              </div>
+              <h3>Motivation</h3>
+              <Question option="1" name={"q6"} handleChange={this.handleChange} question="6. The course was interesting." />
+              <Question option="1" name={"q7"} handleChange={this.handleChange} question="7. The course was stimulating." />
+              <Question option="1" name={"q8"} handleChange={this.handleChange} question="8. The course enhanced my knowledge in this subject." />
+              <div className="Row1">
+                <h3>Learning Outcomes and Organisation</h3>
+                <Question option="1" name={"q9"} handleChange={this.handleChange} question="9. The course was well-organised." />
+                <Question option="1" name={"q10"} handleChange={this.handleChange} question="10. Learning outcomes of the course were clear." />
+              </div>
+              <h3>Assessment</h3>
+              <Question option="1" name={"q11"} handleChange={this.handleChange} question="11. Assessment methods were appropriate." />
+              <Question option="1" name={"q12"} handleChange={this.handleChange} question="12. The amount of workload required was appropriate." />
 
+              <Form.Label>If your answer is Strongly Disargee, Disargee or Slightly Disagree to Q12:</Form.Label>
+
+              <Form.Row>
+                <Form.Group as={Col} md={6}>
+                  <Form.Label>I found the amount of work required for assessment:</Form.Label>
+                </Form.Group>
+                <Form.Group as={Col} md={6}>
+                  <Options2 name={"q12s"} handleChange={this.handleChange} state={this.state} />
+                </Form.Group>
+              </Form.Row>
+              <div className="Row1">
+                <h3>Course Difficulty</h3>
+                <Question option="1" name={"q13"} handleChange={this.handleChange} question="13. Recommended readings were useful." />
+                <Question option="1" name={"q14"} handleChange={this.handleChange} question="14. Course content was of appropriate difficulty." />
+
+                <Form.Label>If your answer is Strongly Disargee, Disargee or Slightly Disagree to Q14:</Form.Label>
+
+                <Form.Row>
+                  <Form.Group as={Col} md={3}>
+                    <Form.Label>I found the course content:</Form.Label>
+                  </Form.Group>
+                  <Form.Group as={Col} md={9}>
+                    <Options3 name={"q14s"} handleChange={this.handleChange} state={this.state} />
+                  </Form.Group>
+                </Form.Row>
+              </div>
+
+              <h3>Learning Support</h3>
+              <Question option="1" name={"q15"} handleChange={this.handleChange} question="15. The course was well supported by library resources." />
+              <Question option="1" name={"q16"} handleChange={this.handleChange} question="16. The course was well supported by IT resources." />
+
+              <div className="Row1">
+                <h3>Overall Opinion</h3>
+                <Question option="1" name={"q17"} handleChange={this.handleChange} question="17. Overall, I am satisfied with the course." />
+                <Question option="1" name={"q18"} handleChange={this.handleChange} question="18. Overall, I am satisfied with the teacher's performance." />
+              </div>
+              <Form.Row>
+                <Form.Group as={Col}>
+                  <Form.Label>a. Comments for the teacher:</Form.Label>
+                  <Form.Control as="textarea" rows="3" name={"a"} value={this.state.a} onChange={this.handleTextChange} />
+                </Form.Group>
+              </Form.Row>
+
+              <Form.Row>
+                <Form.Group as={Col}>
+                  <Form.Label>b. Comment for the course:</Form.Label>
+                  <Form.Control as="textarea" rows="3" name={"b"} value={this.state.b} onChange={this.handleTextChange} />
+                </Form.Group>
+              </Form.Row>
+
+              {/* Token and key parts have no function and no state*/}
+              <Form.Row>
+                <Form.Group as={Col} md={1}>
+                  <Form.Label>token:</Form.Label>
+                </Form.Group>
+                <Form.Group as={Col} md={3}>
+                  <Form.Control as="input" name={"token"} value={this.state.token} onChange={this.handleTextChange} />
+                </Form.Group>
+              </Form.Row>
+              {/****************************************************/}
+
+              <Form.Row>
+                <Col>
+                  <div className="text-center">
+                    <Button type="submit" onSubmit={this.handleSubmit}>Submit</Button>
+                  </div>
+                  <br></br>
+                </Col>
+              </Form.Row>
+            </Form>
+          </div>
+        }
       </div>
+
     );
   }
 }
