@@ -10,6 +10,7 @@ import Evaluation from './Evaluation';
 import Officer from './Officer';
 import Result from './Result';
 import Sidebar from './Sidebar'
+import SubmitSuccess from './submitSuccess';
 import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
@@ -35,6 +36,7 @@ function App(props) {
                                 <PrivateRoute path="/Officer" component={Officer} />
                                 <Route path="/Result" component={Result} />
                                 <Route path="/Evaluation" component={Evaluation} />
+                                <Route path="/Submit" component={SubmitSuccess} />
                             </div>
                         </Router>
                     </Col>
