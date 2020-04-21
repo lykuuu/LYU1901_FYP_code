@@ -8,7 +8,7 @@ class Sidebar extends React.Component {
     render() {
         return (
             <Navbar collapseOnSelect expand="md" bg="light" variant="light" sticky="top" className="sidebar">
-                <Navbar.Brand href="/">Online ACE</Navbar.Brand>
+                <Navbar.Brand href="/">Online CE</Navbar.Brand>
                 <Navbar.Toggle />
                 <Navbar.Collapse>
                     <Nav className="mr-auto">
