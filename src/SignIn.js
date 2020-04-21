@@ -41,10 +41,6 @@ class PopUpS extends React.Component {
             Join Evaluation
           </Button>
           <br></br>
-          <Button variant="primary" type="submit" href="/Result">
-            View Results
-          </Button>
-          <br></br>
           <Button variant="danger" onClick={this.props.closePopup} className="mb-1">
             close
           </Button>
