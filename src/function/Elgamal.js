@@ -1,10 +1,13 @@
 var bigInt = require('big-integer');
+const base = (bigInt(2).pow(511)).toString();
+const limit = ((bigInt(2).pow(512)).minus(1)).toString();
 
 function bigP_generation() {
-    var p = bigInt.randBetween("1e309", "9e309");
+
+    var p = bigInt.randBetween(base, limit);
 
     while (!p.isPrime()) {
-        p = p.add(1);
+        p = p.minus(1);
     }
 
     return p.toString();
