@@ -6,38 +6,38 @@ import { bigP_generation, g_generation, privateKey_gen, publicKey_gen, encrypt, 
 import { Faculty, Level, StudyYear, CourseProperty, Sex, PriLang, PriLangTime, SuppLang, Hours, ExpGrade } from '../src/questionList/questionList'
 import './App.css';
 
-let Information = [
-  { "faculty": [0, 0, 0, 0, 0, 0, 0, 0, 0] },
-  { "level": [0, 0, 0] },
-  { "studyYear": [0, 0, 0, 0, 0, 0] },
-  { "courseProperty": [0, 0, 0, 0, 0] },
-  { "sex": [0, 0] },
-  { "priLang": [0, 0, 0, 0] },
-  { "priLangTime": [0, 0, 0, 0, 0] },
-  { "suppLang": [0, 0, 0, 0, 0] },
-  { "hours": [0, 0, 0, 0, 0, 0] },
-  { "expGrade:": [0, 0, 0, 0, 0, 0] },
-  { "q1": [0, 0, 0, 0, 0, 0, 0, 0] },
-  { "q2": [0, 0, 0, 0, 0, 0, 0, 0] },
-  { "q3": [0, 0, 0, 0, 0, 0, 0, 0] },
-  { "q4": [0, 0, 0, 0, 0, 0, 0, 0] },
-  { "q5": [0, 0, 0, 0, 0, 0, 0, 0] },
-  { "q6": [0, 0, 0, 0, 0, 0, 0, 0] },
-  { "q7": [0, 0, 0, 0, 0, 0, 0, 0] },
-  { "q8": [0, 0, 0, 0, 0, 0, 0, 0] },
-  { "q9": [0, 0, 0, 0, 0, 0, 0, 0] },
-  { "q10": [0, 0, 0, 0, 0, 0, 0, 0] },
-  { "q11": [0, 0, 0, 0, 0, 0, 0, 0] },
-  { "q12": [0, 0, 0, 0, 0, 0, 0, 0] },
-  { "q12s": [0, 0] },
-  { "q13": [0, 0, 0, 0, 0, 0, 0, 0] },
-  { "q14": [0, 0, 0, 0, 0, 0, 0, 0] },
-  { "q14s": [0, 0] },
-  { "q15": [0, 0, 0, 0, 0, 0, 0, 0] },
-  { "q16": [0, 0, 0, 0, 0, 0, 0, 0] },
-  { "q17": [0, 0, 0, 0, 0, 0, 0, 0] },
-  { "q18": [0, 0, 0, 0, 0, 0, 0, 0] }
-];
+let Information = {
+  faculty: [0, 0, 0, 0, 0, 0, 0, 0, 0],
+  level: [0, 0, 0],
+  studyYear: [0, 0, 0, 0, 0, 0],
+  courseProperty: [0, 0, 0, 0, 0, 0],
+  sex: [0, 0],
+  priLang: [0, 0, 0, 0],
+  priLangTime: [0, 0, 0, 0, 0],
+  suppLang: [0, 0, 0, 0, 0],
+  hours: [0, 0, 0, 0, 0, 0],
+  expGrade: [0, 0, 0, 0, 0, 0],
+  q1: [0, 0, 0, 0, 0, 0, 0],
+  q2: [0, 0, 0, 0, 0, 0, 0],
+  q3: [0, 0, 0, 0, 0, 0, 0],
+  q4: [0, 0, 0, 0, 0, 0, 0],
+  q5: [0, 0, 0, 0, 0, 0, 0],
+  q6: [0, 0, 0, 0, 0, 0, 0],
+  q7: [0, 0, 0, 0, 0, 0, 0],
+  q8: [0, 0, 0, 0, 0, 0, 0],
+  q9: [0, 0, 0, 0, 0, 0, 0],
+  q10: [0, 0, 0, 0, 0, 0, 0],
+  q11: [0, 0, 0, 0, 0, 0, 0],
+  q12: [0, 0, 0, 0, 0, 0, 0],
+  q12s: [0, 0],
+  q13: [0, 0, 0, 0, 0, 0, 0],
+  q14: [0, 0, 0, 0, 0, 0, 0],
+  q14s: [0, 0],
+  q15: [0, 0, 0, 0, 0, 0, 0],
+  q16: [0, 0, 0, 0, 0, 0, 0],
+  q17: [0, 0, 0, 0, 0, 0, 0],
+  q18: [0, 0, 0, 0, 0, 0, 0]
+};
 
 class Question extends React.Component {
   render() {
@@ -63,7 +63,7 @@ class Options extends React.Component {
         <Form.Check inline label="Slightly Agree" type={'radio'} name={this.props.name} value={4} onChange={this.props.handleChange} />
         <Form.Check inline label="Agree" type={'radio'} name={this.props.name} value={5} onChange={this.props.handleChange} />
         <Form.Check inline label="Strongly Agree" type={'radio'} name={this.props.name} value={6} onChange={this.props.handleChange} />
-        <Form.Check inline label="N/A" type={'radio'} name={this.props.name} value={0} onChange={this.props.handleChange} />
+        <Form.Check inline label="N/A" type={'radio'} name={this.props.name} value={7} onChange={this.props.handleChange} />
       </div>
     );
   }
@@ -257,15 +257,69 @@ class Evaluation extends React.Component {
       //only encrypt q1-q18 by elgamal
       var finished = [];
       var counter2 = 0;
+      var stateValue = [];
+
+      var stateMValue = [];
+      if (this.state.suppLang.English === true)
+        stateMValue.push(1)
+      else
+        stateMValue.push(0)
+      if (this.state.suppLang.Cantonese === true)
+        stateMValue.push(1)
+      else
+        stateMValue.push(0)
+      if (this.state.suppLang.Putonghua === true)
+        stateMValue.push(1)
+      else
+        stateMValue.push(0)
+      if (this.state.suppLang.Others === true)
+        stateMValue.push(1)
+      else
+        stateMValue.push(0)
+      if (this.state.suppLang.NA === true)
+        stateMValue.push(1)
+      else
+        stateMValue.push(0)
+
       for (var x in this.state) {
-        var dataName = x;
+        if (counter2 >= 32)
+          break;
+        var saveTo = this.state[x] - 1;
+        if (counter2 !== 9 && counter2 > 1) {
+          console.log(x);
+          stateValue.push(saveTo);
+        }
+        /*var dataName = x;
         if (counter2 > 11 && counter2 < 32) {
           var encrypted = encrypt(this.state[dataName], p, g, pubK);
           finished.push(encrypted);
-        }
+        }*/
         counter2 += 1;
       }
-      //generating the data to be sent
+      console.log(stateValue)
+      var counter3 = 0;
+      var passed = 0;
+      for (var y in Information) {
+        var tmpArr = Information[y];
+        var tmpIndex = stateValue[counter3];
+        if (passed === 1)
+          tmpIndex = stateValue[counter3 - 1];
+        console.log("y: " + y);
+        console.log("tmpArr: " + tmpArr);
+        if (counter3 !== 7) {
+          if (tmpIndex < 0)
+            tmpArr[tmpIndex + 1] = 0;
+          else
+            tmpArr[tmpIndex] = 1;
+          Information[y] = tmpArr;
+        } else {
+          Information[y] = stateMValue;
+          passed = 1;
+        }
+        counter3 += 1;
+      }
+      console.log(Information);
+      /*generating the data to be sent
       var Data = JSON.parse(JSON.stringify(this.state));
       var counter3 = 0;
       for (var y in Data) {
@@ -278,7 +332,7 @@ class Evaluation extends React.Component {
       delete Data.q14s_switch;
       Data = JSON.stringify(Data);
 
-      //if submit successfully, re-render.
+      //if submit successfully, re-render.*/
     }
 
     e.preventDefault();
