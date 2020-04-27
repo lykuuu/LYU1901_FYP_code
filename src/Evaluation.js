@@ -6,7 +6,7 @@ import { bigP_generation, g_generation, privateKey_gen, publicKey_gen, encrypt, 
 import { Faculty, Level, StudyYear, CourseProperty, Sex, PriLang, PriLangTime, SuppLang, Hours, ExpGrade } from '../src/questionList/questionList'
 import './App.css';
 
-//This is data to be sent
+//This is data(only the mc) to be sent
 let Information = {
   faculty: [0, 0, 0, 0, 0, 0, 0, 0, 0],
   level: [0, 0, 0],
@@ -129,7 +129,8 @@ class Evaluation extends React.Component {
       q16: -1,
       q17: -1,
       q18: -1,
-      a: ""
+      a: "",
+      encrypted: false
     }
     this.handleChange = this.handleChange.bind(this);
     this.handleMChange = this.handleMChange.bind(this);
@@ -321,7 +322,9 @@ class Evaluation extends React.Component {
         }
         Information[en_i] = tmpEnArr;
       }
-      
+      this.setState({
+        encrypted:true
+      });
     }
 
     e.preventDefault();
@@ -422,6 +425,16 @@ class Evaluation extends React.Component {
               <br></br>
             </Col>
           </Form.Row>
+
+          {this.state.encrypted &&
+            <Form.Row>
+              <Form.Group as={Col}>
+                <Form.Label>Ciphertext:</Form.Label>
+                <Form.Control as="textarea" rows="50" name={"a"} value={JSON.stringify(Information)} />
+              </Form.Group>
+            </Form.Row>
+          }
+
         </Form>
       </div>
     );
