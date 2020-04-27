@@ -81,6 +81,7 @@ class Result extends React.Component {
 
         //replace with real search code
         if (searchID !== "") {
+            var courseID = prompt("Please enter course ID.");
             this.setState({
                 privateKey: searchID
             });
