@@ -6,6 +6,7 @@ import { bigP_generation, g_generation, privateKey_gen, publicKey_gen, encrypt, 
 import { Faculty, Level, StudyYear, CourseProperty, Sex, PriLang, PriLangTime, SuppLang, Hours, ExpGrade } from '../src/questionList/questionList'
 import './App.css';
 
+//This is data to be sent
 let Information = {
   faculty: [0, 0, 0, 0, 0, 0, 0, 0, 0],
   level: [0, 0, 0],
@@ -254,8 +255,8 @@ class Evaluation extends React.Component {
       var priK = privateKey_gen(p, g);
       var pubK = publicKey_gen(p, g, priK);
       //////////////////////////////////////testing code end
-      //only encrypt q1-q18 by elgamal
-      var finished = [];
+      //record the chosen options into array
+
       var counter2 = 0;
       var stateValue = [];
 
@@ -286,17 +287,12 @@ class Evaluation extends React.Component {
           break;
         var saveTo = this.state[x] - 1;
         if (counter2 !== 9 && counter2 > 1) {
-          console.log(x);
           stateValue.push(saveTo);
         }
-        /*var dataName = x;
-        if (counter2 > 11 && counter2 < 32) {
-          var encrypted = encrypt(this.state[dataName], p, g, pubK);
-          finished.push(encrypted);
-        }*/
         counter2 += 1;
       }
-      console.log(stateValue)
+
+      //change the Information data
       var counter3 = 0;
       var passed = 0;
       for (var y in Information) {
@@ -304,8 +300,6 @@ class Evaluation extends React.Component {
         var tmpIndex = stateValue[counter3];
         if (passed === 1)
           tmpIndex = stateValue[counter3 - 1];
-        console.log("y: " + y);
-        console.log("tmpArr: " + tmpArr);
         if (counter3 !== 7) {
           if (tmpIndex < 0)
             tmpArr[tmpIndex + 1] = 0;
@@ -318,21 +312,16 @@ class Evaluation extends React.Component {
         }
         counter3 += 1;
       }
-      console.log(Information);
-      /*generating the data to be sent
-      var Data = JSON.parse(JSON.stringify(this.state));
-      var counter3 = 0;
-      for (var y in Data) {
-        if (counter3 > 11 && counter3 < 32) {
-          Data[y] = finished[counter3 - 12];
+      ////////////////////////////////////
+      //encrypt evaluation data
+      for (var en_i in Information) {
+        var tmpEnArr = Information[en_i];
+        for (var en_j = 0; en_j < tmpEnArr.length; en_j++) {
+          tmpEnArr[en_j] = encrypt(tmpEnArr[en_j], p, g, pubK);
         }
-        counter3 += 1;
+        Information[en_i] = tmpEnArr;
       }
-      delete Data.q12s_switch;
-      delete Data.q14s_switch;
-      Data = JSON.stringify(Data);
-
-      //if submit successfully, re-render.*/
+      
     }
 
     e.preventDefault();
