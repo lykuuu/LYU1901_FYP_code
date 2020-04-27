@@ -12,11 +12,11 @@ class ExpGrade extends React.Component {
                 </Form.Group>
                 <Form.Group as={Col} md={6}>
                     <div className="mb-3">
-                        <Form.Check inline label="A" name="expGrade" type={'radio'} value={"A"} onChange={this.props.handleChange} />
-                        <Form.Check inline label="A-" name="expGrade" type={'radio'} value={"A-"} onChange={this.props.handleChange} />
-                        <Form.Check inline label="B+" name="expGrade" type={'radio'} value={"B+"} onChange={this.props.handleChange} />
-                        <Form.Check inline label="B/B-" name="expGrade" type={'radio'} value={"B/B-"} onChange={this.props.handleChange} />
-                        <Form.Check inline label="C+ or below" name="expGrade" type={'radio'} value={"C+ or below"} onChange={this.props.handleChange} />
+                        <Form.Check inline label="A" name="expGrade" type={'radio'} value={1} onChange={this.props.handleChange} />
+                        <Form.Check inline label="A-" name="expGrade" type={'radio'} value={2} onChange={this.props.handleChange} />
+                        <Form.Check inline label="B+" name="expGrade" type={'radio'} value={3} onChange={this.props.handleChange} />
+                        <Form.Check inline label="B/B-" name="expGrade" type={'radio'} value={4} onChange={this.props.handleChange} />
+                        <Form.Check inline label="C+ or below" name="expGrade" type={'radio'} value={5} onChange={this.props.handleChange} />
                     </div>
                 </Form.Group>
             </Form.Row>
