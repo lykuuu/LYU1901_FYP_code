@@ -78,10 +78,12 @@ class Result extends React.Component {
     handleSearch = (e) => {
         var searchID = this.privateKey_input.current.value;
         var found = true;
-
+        var courseID = "";
+        while (courseID === "") {
+            courseID = prompt("Please enter course ID.");
+        }
         //replace with real search code
         if (searchID !== "") {
-            var courseID = prompt("Please enter course ID.");
             this.setState({
                 privateKey: searchID
             });
