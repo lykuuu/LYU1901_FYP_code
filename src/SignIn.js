@@ -2,6 +2,7 @@ import React from 'react';
 import Button from '../node_modules/react-bootstrap/Button'
 import Form from '../node_modules/react-bootstrap/Form'
 import Alert from 'react-bootstrap/Alert'
+import Submit from './submitSuccess'
 import './App.css';
 
 class PopUpO extends React.Component {
@@ -35,12 +36,12 @@ class PopUpS extends React.Component {
   render() {
     return (
       <div className="Alert">
-        <div className="InnerAlert">
+        <div className="InnerAlert" style={{height:"500px"}}>
           <br></br>
-          <Button variant="primary" type="submit" href="/Evaluation">
+          {/*<Button variant="primary" type="submit" href="/Evaluation">
             Join Evaluation
-          </Button>
-          <br></br>
+    </Button>*/}
+          <Submit/>
           <Button variant="danger" onClick={this.props.closePopup} className="mb-1">
             close
           </Button>
