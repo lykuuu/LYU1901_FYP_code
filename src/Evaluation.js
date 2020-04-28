@@ -251,10 +251,14 @@ class Evaluation extends React.Component {
     if (missing === 0) {
       //testing code, please replace it with code for receiving p, g, public key
       alert("start encrypting");
-      var p = bigP_generation();
-      var g = g_generation(p);
-      var priK = privateKey_gen(p, g);
-      var pubK = publicKey_gen(p, g, priK);
+      // var p = bigP_generation();
+      // var g = g_generation(p);
+      // var priK = privateKey_gen(p, g);
+      // var pubK = publicKey_gen(p, g, priK);
+
+      // get info from a
+      let { p, g, pubK } = JSON.parse(this.state.a)
+
       //////////////////////////////////////testing code end
       //record the chosen options into array
 
@@ -323,9 +327,16 @@ class Evaluation extends React.Component {
         Information[en_i] = tmpEnArr;
       }
       this.setState({
-        encrypted:true
+        encrypted: true
       });
     }
+
+    // save result to clipboard
+    navigator.clipboard.writeText(JSON.stringify(Information)).then(
+      () => {
+        alert("encryption done")
+      }
+    )
 
     e.preventDefault();
   }
@@ -430,7 +441,7 @@ class Evaluation extends React.Component {
             <Form.Row>
               <Form.Group as={Col}>
                 <Form.Label>Ciphertext:</Form.Label>
-                <Form.Control as="textarea" rows="50" name={"a"} value={JSON.stringify(Information)} />
+                <Form.Control as="textarea" rows="50" name={"a"} value={JSON.stringify(Information)} defalutValue="" />
               </Form.Group>
             </Form.Row>
           }
