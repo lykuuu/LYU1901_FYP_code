@@ -51,11 +51,12 @@ class Submit extends React.Component {
             fetch('http://3.113.9.168:8080/api/evaluation', requestOptions).then(response => {
                 if (response.status === 400) {
                     //TODO: change it to bad response reaction
-                    alert("bad")
+                    alert("Please check your input!")
                 }
                 else if (response.status === 200) {
                     //TODO: change it to good response reaction
-                    alert("good")
+                    alert("Successful submission.\nThank you for you participation.");
+                    window.location.reload(false);
                 }
 
             })
