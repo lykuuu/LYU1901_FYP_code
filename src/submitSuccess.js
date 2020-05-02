@@ -9,8 +9,8 @@ class Submit extends React.Component {
         super(prop)
         this.state = {
             courseID: "",
-            token:"",
-            ciphertext:""
+            token: "",
+            ciphertext: ""
 
         }
         this.handleTextChange = this.handleTextChange.bind(this);
@@ -34,8 +34,31 @@ class Submit extends React.Component {
             }
         }
         if (missing === 0) {
-            //testing code, please replace it with code for receiving p, g, public key
-            alert("Thank you for participation!");
+
+            let requestOptions = {
+                method: 'POST',
+                headers:
+                {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    courseID: this.state.courseID,
+                    tokenString: this.state.token,
+                    cipherText: this.state.ciphertext
+                })
+            };
+
+            fetch('http://3.113.9.168:8080/api/evaluation', requestOptions).then(response => {
+                if (response.status === 400) {
+                    //TODO: change it to bad response reaction
+                    alert("bad")
+                }
+                else if (response.status === 200) {
+                    //TODO: change it to good response reaction
+                    alert("good")
+                }
+
+            })
         }
 
         e.preventDefault();
@@ -70,7 +93,7 @@ class Submit extends React.Component {
                     <Form.Row>
                         <Col>
                             <div className="text-center">
-                                <Button className="w-100"type="submit" onSubmit={this.handleSubmit}>Submit</Button>
+                                <Button className="w-100" type="submit" onSubmit={this.handleSubmit}>Submit</Button>
                             </div>
                             <br></br>
                         </Col>

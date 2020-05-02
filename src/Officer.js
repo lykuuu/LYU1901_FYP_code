@@ -80,9 +80,13 @@ class Officer extends React.Component {
                         expireDate: this.Edate.current.value,
                         studentID: resp.rows
                     }
+
+                    console.log(data)
+
                     this.setState({
                         showSuccessF: true
                     });
+
                     setTimeout(() => {
                         this.setState({
                             showSuccessF: false

@@ -5,6 +5,8 @@ import InputGroup from 'react-bootstrap/InputGroup'
 import FormControl from 'react-bootstrap/FormControl'
 import './App.css';
 
+// TODO: add a input field for courseID
+
 let Information = [
     { "faculty": [0, 0, 0, 0, 0, 0, 0, 0, 0] },
     { "level": [0, 0, 0] },
