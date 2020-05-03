@@ -254,10 +254,10 @@ class Evaluation extends React.Component {
       // var p = bigP_generation();
       // var g = g_generation(p);
       // var priK = privateKey_gen(p, g);
-      // var pubK = publicKey_gen(p, g, priK);
+      // var publicKey = publicKey_gen(p, g, priK);
 
       // get info from a
-      let { p, g, pubK } = JSON.parse(this.state.a)
+      let { p, g, publicKey } = JSON.parse(this.state.a)
 
       //////////////////////////////////////testing code end
       //record the chosen options into array
@@ -322,7 +322,7 @@ class Evaluation extends React.Component {
       for (var en_i in Information) {
         var tmpEnArr = Information[en_i];
         for (var en_j = 0; en_j < tmpEnArr.length; en_j++) {
-          tmpEnArr[en_j] = encrypt(tmpEnArr[en_j], p, g, pubK);
+          tmpEnArr[en_j] = encrypt(tmpEnArr[en_j], p, g, publicKey);
         }
         Information[en_i] = tmpEnArr;
       }

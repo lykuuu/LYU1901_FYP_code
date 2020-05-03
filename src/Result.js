@@ -4,8 +4,8 @@ import Button from 'react-bootstrap/Button'
 import InputGroup from 'react-bootstrap/InputGroup'
 import FormControl from 'react-bootstrap/FormControl'
 import './App.css';
+import { decrypt } from './function/Elgamal.js'
 
-// TODO: add a input field for courseID
 
 let Information = [
     { "faculty": [0, 0, 0, 0, 0, 0, 0, 0, 0] },
@@ -89,6 +89,30 @@ class Result extends React.Component {
             this.setState({
                 privateKey: searchID
             });
+
+            fetch(`http://3.113.9.168:8080/api/course/${courseID}`).then(response => {
+                if (response.status !== 200) {
+                    //TODO: change it to bad response reaction
+                    alert("Bad")
+                }
+                else {
+                    response.json().then(json => {
+
+                        let { result, courseInfo } = json
+
+                        for (const key in result) {
+                            result[key] = result[key].map((v, i) => {
+                                return decrypt(v, courseInfo.p, courseInfo.g, this.state.privateKey)
+                            })
+                        }
+
+                        //TOD: link result to display,result is the already decrypted format
+                        console.log(result)
+
+                    })
+                }
+
+            })
 
 
             this.setState({

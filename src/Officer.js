@@ -75,13 +75,38 @@ class Officer extends React.Component {
                 }
                 else {
                     //data for generate evaluation and tokens
-                    var data = {
+                    // var data = {
+                    //     courseID: this.courseID.current.value,
+                    //     expireDate: this.Edate.current.value,
+                    //     studentID: resp.rows
+                    // }
+
+                    let body = JSON.stringify({
                         courseID: this.courseID.current.value,
                         expireDate: this.Edate.current.value,
-                        studentID: resp.rows
-                    }
+                        email: resp.rows.flat()
+                    })
 
-                    console.log(data)
+                    let requestOptions = {
+                        method: 'POST',
+                        headers:
+                        {
+                            'Content-Type': 'application/json'
+                        },
+                        body: body
+                    };
+
+                    fetch('http://3.113.9.168:8080/api/course', requestOptions).then(response => {
+                        if (response.status !== 200) {
+                            //TODO: change it to bad response reaction
+                            alert("Bad")
+                        }
+                        else {
+                            //TODO: change it to good response reaction
+                            alert("Good");
+                        }
+
+                    })
 
                     this.setState({
                         showSuccessF: true
