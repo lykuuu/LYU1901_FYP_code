@@ -31,7 +31,7 @@ function App(props) {
                     <Col xs={10} sm={9} md={8} lg={7}>
                         <Router>
                             <div>
-                                <Route exact path="/" component={Home} />
+                                <Route exact path="/" component={SignIn} />
                                 <Route path="/SignIn" component={SignIn} />
                                 <PrivateRoute path="/Officer" component={Officer} />
                                 <Route path="/Result" component={Result} />
