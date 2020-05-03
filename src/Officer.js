@@ -99,18 +99,18 @@ class Officer extends React.Component {
                     fetch('http://3.113.9.168:8080/api/course', requestOptions).then(response => {
                         if (response.status !== 200) {
                             //TODO: change it to bad response reaction
-                            alert("Bad")
+                            alert("Please try again.")
                         }
                         else {
                             //TODO: change it to good response reaction
-                            alert("Good");
+                            this.setState({
+                                showSuccessF: true
+                            });
                         }
 
                     })
 
-                    this.setState({
-                        showSuccessF: true
-                    });
+
 
                     setTimeout(() => {
                         this.setState({
