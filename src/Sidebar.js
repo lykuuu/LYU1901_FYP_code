@@ -3,7 +3,6 @@ import './App.css';
 import Nav from 'react-bootstrap/Nav'
 import Navbar from 'react-bootstrap/Navbar'
 
-
 class Sidebar extends React.Component {
     handleClick() {
         if (window.location.pathname === "/Officer" || window.location.pathname === "/Result")
